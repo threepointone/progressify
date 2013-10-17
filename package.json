@@ -1,0 +1,19 @@
+{
+  "name": "progressify",
+  "version": "0.0.1",
+  "description": "progress bars for any async function",
+  "keywords": [],
+  "author": "Sunil Pai <threepointone@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/threepointone/progressify.git"
+  },
+  "dependencies": {
+    "progress": "git://github.com/threepointone/progress"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
+  "main": "index"
+}
