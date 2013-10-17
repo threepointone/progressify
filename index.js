@@ -6,36 +6,34 @@
 
 var slice = [].slice;
 
-function progressify(fn, scope){
-	return function(){
-		var bar = require('progress')();
-		bar.inc();
-		var intval = setInterval(function(){
-			if(bar.finished){
-				clearInterval(intval);
-			}
-			else{
-				bar.inc();
-			}
-		}, 1000);
+function progressify(fn, scope) {
+    return function() {
+        var bar = require('progress')();
+        bar.inc();
+        var intval = setInterval(function() {
+            if (bar.finished) {
+                clearInterval(intval);
+            } else {
+                bar.inc();
+            }
+        }, 1000);
 
-		var args = slice.call(arguments, 0);
-		var done = args[args.length-1];
-		if(typeof done !== 'function'){
-			done = function(){
-				bar.end();
-			};
-			args = args.concat([done]);
-		}
-		else{
-			// couch the function to add our call to end the progress bar
-			args[args.length-1] = function(){
-				bar.end();
-				done.apply(null, arguments);
-			};
-		}
-		return fn.apply(scope, args);
-	};
+        var args = slice.call(arguments, 0);
+        var done = args[args.length - 1];
+        if (typeof done !== 'function') {
+            done = function() {
+                bar.end();
+            };
+            args = args.concat([done]);
+        } else {
+            // couch the function to add our call to end the progress bar
+            args[args.length - 1] = function() {
+                bar.end();
+                done.apply(null, arguments);
+            };
+        }
+        return fn.apply(scope, args);
+    };
 }
 
 module.exports = progressify;
