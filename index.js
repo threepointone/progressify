@@ -6,7 +6,7 @@
 
 var slice = [].slice;
 
-function progressify(fn, scope) {
+function progressify(fn, scope, timeout) {
     return function() {
         var bar = require('progress')();
         bar.inc();
@@ -18,13 +18,17 @@ function progressify(fn, scope) {
             }
         }, 1000);
 
+        setTimeout(function(){  // an actual timeout. 30 seconds. 
+            bar.end();
+        }, timeout || 30000)
+
         var args = slice.call(arguments, 0);
         var done = args[args.length - 1];
-        if (typeof done !== 'function') {
-            done = function() {
+
+        if (typeof done !== 'function') {            
+            args = args.concat([function() {
                 bar.end();
-            };
-            args = args.concat([done]);
+            }]);
         } else {
             // couch the function to add our call to end the progress bar
             args[args.length - 1] = function() {
